@@ -121,6 +121,8 @@ sub main {
         $cfg{tsformat}      = $opts->{tsformat}            || '%Y-%m-%d-%H%M%S';
         $cfg{pre_znap_cmd}  = $opts->{'pre-snap-command'}  || 'off';
         $cfg{post_znap_cmd} = $opts->{'post-snap-command'} || 'off';
+        $cfg{pre_send_cmd}  = $opts->{'pre-send-command'}  || 'off';
+        $cfg{post_send_cmd} = $opts->{'post-send-command'} || 'off';
 
         my $backupSet = parseArguments(\@ARGV);
         #merge arguments to our cfg
@@ -220,7 +222,9 @@ sub main {
         $backupSet->{tsformat}      = $opts->{tsformat}            if $opts->{tsformat};
         $backupSet->{pre_znap_cmd}  = $opts->{'pre-snap-command'}  if $opts->{'pre-snap-command'};
         $backupSet->{post_znap_cmd} = $opts->{'post-snap-command'} if $opts->{'post-snap-command'};
-
+        $backupSet->{pre_send_cmd}  = $opts->{'pre-send-command'}  if $opts->{'pre-send-command'};
+        $backupSet->{post_send_cmd} = $opts->{'post-send-command'} if $opts->{'post-send-command'};
+    
         #get active backup config
         my $backupSets = $zConfig->getBackupSet($backupSet->{src}) or die "ERROR: cannot get backup config\n";
         @$backupSets or die "ERROR: backup set for $backupSet->{src} does not exist\n";
