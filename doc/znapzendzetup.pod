@@ -12,6 +12,8 @@ where 'command' is one of the following:
             [--recursive] [--mbuffer=<path>[:<port>]] [--mbuffersize=<size>] \
             [--pre-snap-command=<command>] \
             [--post-snap-command=<command>] \
+            [--pre-send-command=<command>|off] \
+            [--post-send-command=<command>|off] \
             [--tsformat=<format>] --donotask \
             SRC plan dataset \
             [ DST[:key] plan [[user@]host:]dataset ]
@@ -22,6 +24,8 @@ where 'command' is one of the following:
             [--recursive=on|off] [--mbuffer=<path>[:<port>]|off] [--mbuffersize=<size>] \
             [--pre-snap-command=<command>|off] \
             [--post-snap-command=<command>|off] \
+            [--pre-send-command=<command>|off] \
+            [--post-send-command=<command>|off] \
             [--tsformat=<format>] --donotask \
             SRC [plan] dataset \
             [ DST:key [plan] [dataset] ]
@@ -152,6 +156,10 @@ intended it to be.
 
 Run commands/scripts before and after snapshots are taken on source.
 e.g. for database locking/flushing (pre) and unlocking (post).
+
+=item B<--pre-send-command>=I</path/bin args>, B<--post-send-command>=I</path/bin args>
+
+Run commands/scripts on source before and after snapshots are sent to destination. 
 
 =back
 
