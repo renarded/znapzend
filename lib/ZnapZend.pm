@@ -168,6 +168,17 @@ my $sendRecvCleanup = sub {
     #no HUP handler in child
     $SIG{HUP} = 'IGNORE';
 
+    #set env variables for pre and post scripts use
+    local $ENV{BACKUP_SET_SRC} = $backupSet->{src};
+    local $ENV{ZEND_TIME} = $timeStamp;
+    
+    if ($backupSet->{pre_send_cmd} && $backupSet->{pre_send_cmd} ne 'off'){
+        $self->zLog->info("running pre send command on $backupSet->{src}");
+
+        system($backupSet->{pre_send_cmd})
+            && $self->zLog->warn("running pre send command on $backupSet->{src} failed");
+    }
+    
     my @snapshots;
     my $toDestroy;
     my $sendFailed = 0;
@@ -283,7 +294,18 @@ my $sendRecvCleanup = sub {
     }
     $self->zLog->info('done with backupset ' . $backupSet->{src} . ' in '
         . (time - $startTime) . ' seconds');
+            
+    if ($backupSet->{post_send_cmd} && $backupSet->{post_send_cmd} ne 'off'){
+        $self->zLog->info("running post send command on $backupSet->{src}");
 
+        system($backupSet->{post_send_cmd})
+            && $self->zLog->warn("running post send command on $backupSet->{src} failed");
+    }
+    
+    #clean up env variables
+    delete $ENV{BACKUP_SET_SRC};
+    delete $ENV{ZEND_TIME};
+    
     return 1;
 };
 
